@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
 	cout << "Target directory is " << dir << endl;
 
 	_chdir(dir.c_str());
-
-	dir += "\\*";
+	if (*(dir.rbegin())!='*')
+		dir += "\\*";
 
 	HANDLE find = INVALID_HANDLE_VALUE;
 	find = FindFirstFile(dir.c_str(), &ffd);
