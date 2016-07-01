@@ -10,18 +10,46 @@ int linesInFile(WIN32_FIND_DATA);
 int linesInDirectory(const char*);
 int linesInDirectoryRecursive(const char*);
 
+static const char* sourceFormatString("Standard usage: %s <directory path>\n\n");
+
 int main(int argc, char* argv[])
 {
 	string dir;
-	if (argc != 2)
+	bool recursive(false);
+	if (argc == 1)
 	{
 		dir = _getcwd(nullptr, 0);
 		printf("Warning: No directory given, assuming %s\n", dir.c_str());
-		printf("Standard usage: %s <directory path>\n\n", argv[0]);
+		printf(sourceFormatString, argv[0]);
+	}
+	else if (argc == 2)
+		dir = argv[1];
+	else if (argc==3)
+	{
+		size_t dirpos(1);
+		recursive = true;
+		if (!strcmp(argv[dirpos], "/r"))
+			dirpos = 2;
+		else if (strcmp(argv[2], "/r"))
+		{
+			printf("Invalid arguments \"%s\", \"%s\"\n", argv[1], argv[2]);
+			printf(sourceFormatString, argv[0]);
+			return 127;
+		}
+		dir = argv[dirpos];
 	}
 	else
-		dir = argv[1];
-	return linesInDirectory(dir);
+	{
+		cout << "Invalid arguments \"" << argv[1] << "\"";
+		for (int i = 2; i < argc; ++i)
+			cout << ", \"" << argv[i] << "\"";
+		printf(sourceFormatString, argv[0]);
+		return 127;
+	}
+	if (recursive)
+		return linesInDirectoryRecursive(dir) == -1;
+	else
+		return linesInDirectory(dir);
 }
 
 int linesInDirectory(string dir)
