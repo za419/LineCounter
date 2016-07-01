@@ -26,7 +26,14 @@ int main(int argc, char* argv[])
 		cout << endl;
 	}
 	else if (argc == 2)
+	{
+		if (isHelpFlag(argv[1]))
+		{
+			help(argv[0]);
+			return 0;
+		}
 		dir = argv[1];
+	}
 	else if (argc==3)
 	{
 		size_t dirpos(1);
