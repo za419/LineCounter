@@ -6,8 +6,8 @@ using namespace std;
 #pragma comment(lib, "User32.lib")
 
 int linesInFile(WIN32_FIND_DATA); // Returns the number of lines in the file to which the argument is a handle
-int linesInDirectory(const char*); // Returns if an error occurred, exactly like main
-int linesInDirectoryRecursive(const char*); // Returns the number of lines in the directory tree with root directory given, or -1 if an error occurred
+int linesInDirectory(string); // Returns if an error occurred, exactly like main
+int linesInDirectoryRecursive(string); // Returns the number of lines in the directory tree with root directory given, or -1 if an error occurred
 
 void help(const char*); // Prints the help message to cout
 bool isHelpFlag(const char*); // Returns whether the passed string is a recognized help flag
