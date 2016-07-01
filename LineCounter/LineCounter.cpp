@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 			help(argv[0]);
 			return 0;
 		}
-		else if (strcmp(argv[1], "/r")) // If its the recursive flag, print warning and help message, then recursive-count files in current working directory.
+		else if (!strcmp(argv[1], "/r")) // If its the recursive flag, print warning and help message, then recursive-count files in current working directory.
 		{
 			dir = _getcwd(nullptr, 0);
 			recursive = true;
