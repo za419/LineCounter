@@ -138,7 +138,7 @@ int linesInDirectoryRecursive(const string& path)
 			if (len != -1)
 				sum += len;
 			cout << "Done with subdirectory " << ffd.cFileName << ".\n";
-			cout << "\tRunning total of lines in " << dir << ": " << sum << ".\n\n";
+			cout << "\tRunning total of lines in " << path << ": " << sum << ".\n\n";
 		}
 		else
 		{
