@@ -7,7 +7,7 @@ using namespace std;
 
 int linesInFile(WIN32_FIND_DATA); // Returns the number of lines in the file to which the argument is a handle
 int linesInDirectory(string); // Returns if an error occurred, exactly like main
-int linesInDirectoryRecursive(string); // Returns the number of lines in the directory tree with root directory given, or -1 if an error occurred
+int linesInDirectoryRecursive(const string&); // Returns the number of lines in the directory tree with root directory given, or -1 if an error occurred
 
 void help(const char*); // Prints the help message to cout
 bool isHelpFlag(const char*); // Returns whether the passed string is a recognized help flag
@@ -105,14 +105,14 @@ int linesInDirectory(string dir)
 	return 0;
 }
 
-int linesInDirectoryRecursive(string dir)
+int linesInDirectoryRecursive(const string& path)
 {
 	WIN32_FIND_DATA	ffd;
 
-	cout << "Target directory is " << dir << endl;
+	cout << "Target directory is " << path << endl;
 
-	_chdir(dir.c_str());
-	dir += "\\*";
+	_chdir(path.c_str());
+	string dir = path+"\\*";
 
 	HANDLE find = INVALID_HANDLE_VALUE;
 	find = FindFirstFile(dir.c_str(), &ffd);
@@ -134,7 +134,7 @@ int linesInDirectoryRecursive(string dir)
 				continue;
 			cout << "\n\nFound directory " << ffd.cFileName << ".\n";
 			cout << "Counting lines in directory...\n\n";
-			len = linesInDirectoryRecursive(dir);
+			len = linesInDirectoryRecursive(path+ffd.cFileName+"\\");
 			if (len != -1)
 				sum += len;
 			cout << "Done with subdirectory " << ffd.cFileName << ".\n";
