@@ -153,7 +153,7 @@ int linesInDirectoryRecursive(const string& path)
 	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | 80, NULL, GetLastError(), 0, msg, 9001, NULL);
 	cout << "\n\n" << msg;
 
-	cout << "\n\nTotal number of lines in files in the directory " << _getcwd(NULL, NULL) << ": " << sum << ".\n";
+	cout << "\n\nTotal number of lines in files in the directory " << path << ": " << sum << ".\n";
 	return sum;
 }
 
