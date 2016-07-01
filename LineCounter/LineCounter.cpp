@@ -130,6 +130,8 @@ int linesInDirectoryRecursive(string dir)
 	{
 		if (ffd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
 		{
+			if (!strcmp(ffd.cFileName, ".") || !stricmp(ffd.cFileName, ".."))
+				continue;
 			cout << "\n\nFound directory " << ffd.cFileName << ".\n";
 			cout << "Counting lines in directory...\n\n";
 			len = linesInDirectoryRecursive(dir);
