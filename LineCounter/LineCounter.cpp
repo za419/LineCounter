@@ -10,7 +10,8 @@ int linesInFile(WIN32_FIND_DATA);
 int linesInDirectory(const char*);
 int linesInDirectoryRecursive(const char*);
 
-static const char* sourceFormatString("Standard usage: %s <directory path>\n\n");
+void help(const char* prog);
+
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +21,8 @@ int main(int argc, char* argv[])
 	{
 		dir = _getcwd(nullptr, 0);
 		printf("Warning: No directory given, assuming %s\n", dir.c_str());
-		printf(sourceFormatString, argv[0]);
+		help(argv[0]);
+		cout << endl;
 	}
 	else if (argc == 2)
 		dir = argv[1];
@@ -33,7 +35,7 @@ int main(int argc, char* argv[])
 		else if (strcmp(argv[2], "/r"))
 		{
 			printf("Invalid arguments \"%s\", \"%s\"\n", argv[1], argv[2]);
-			printf(sourceFormatString, argv[0]);
+			help(argv[0]);
 			return 127;
 		}
 		dir = argv[dirpos];
@@ -43,7 +45,7 @@ int main(int argc, char* argv[])
 		cout << "Invalid arguments \"" << argv[1] << "\"";
 		for (int i = 2; i < argc; ++i)
 			cout << ", \"" << argv[i] << "\"";
-		printf(sourceFormatString, argv[0]);
+		help(argv[0]);
 		return 127;
 	}
 	if (recursive)
@@ -159,5 +161,19 @@ int linesInFile(WIN32_FIND_DATA ffd)
 	in.close();
 
 	return len;
+}
+
+void help(const char* prog)
+{
+	cout << "LineCounter: Counts the number of lines in all files of the chosen directory.\n";
+	cout << "Usage: " << prog << " [directory_path] [/r]\n";
+	cout << "    directory_path: The path to the directory in which to count lines\n";
+	cout << "        If omitted, will print a warning message and count files in the current\n";
+	cout << "        working directory.\n";
+	cout << "    /r: Recursive mode\n";
+	cout << "        By default, LineCounter will only count files directly in the directory\n";
+	cout << "        given: That is, it will produce a flat count.\n";
+	cout << "        Passing this flag will instruct it to count files in all subdirectories\n";
+	cout << "        as well: A recursive count.\n";
 }
 
