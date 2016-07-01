@@ -6,6 +6,9 @@ using namespace std;
 
 #pragma comment(lib, "User32.lib")
 
+int linesInFile(WIN32_FIND_DATA);
+int linesInDirectory(const char*);
+
 int main(int argc, char* argv[])
 {
 	WIN32_FIND_DATA	ffd;
@@ -35,28 +38,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	ifstream in;
-
-	uintmax_t sum(0);
-
 	do
 	{
-		if (ffd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
-			continue;
-
-
-		in.open(ffd.cFileName, ios::in);
-		size_t len(0);
-		while (in.good())
-		{
-			getline(in, dir);
-			++len;
-		}
-		in.clear();
-		in.close();
-
-		sum += len;
-
+		
 		cout << "\tFile " << ffd.cFileName << ": " << len << " lines.\n";
 		cout << "\t\tRunning total: " << sum << endl << endl;
 	} while (FindNextFile(find, &ffd));
@@ -67,5 +51,29 @@ int main(int argc, char* argv[])
 
 	cout << "\n\nTotal number of lines in files in the directory " << _getcwd(NULL,NULL) << ": " << sum << ".\n";
 	return 0;
+}
+
+int linesInFile(WIN32_FIND_DATA ffd)
+{
+	ifstream in;
+
+	uintmax_t sum(0);
+
+	if (ffd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
+		return 0;
+
+
+	in.open(ffd.cFileName, ios::in);
+	size_t len(0);
+	string line;
+	while (in.good())
+	{
+		getline(in, line);
+		++len;
+	}
+	in.clear();
+	in.close();
+
+	sum += len;
 }
 
