@@ -10,8 +10,9 @@ int linesInFile(WIN32_FIND_DATA);
 int linesInDirectory(const char*);
 int linesInDirectoryRecursive(const char*);
 
-void help(const char* prog);
+void help(const char*);
 
+bool isHelpFlag(const char*);
 
 int main(int argc, char* argv[])
 {
@@ -175,5 +176,10 @@ void help(const char* prog)
 	cout << "        given: That is, it will produce a flat count.\n";
 	cout << "        Passing this flag will instruct it to count files in all subdirectories\n";
 	cout << "        as well: A recursive count.\n";
+}
+
+bool isHelpFlag(const char* arg)
+{
+	return !strcmp(arg, "/h") || !strcmp(arg, "/help") || !strcmp(arg, "/?") || !strcmp(arg, "-h") || !strcmp(arg, "--help");
 }
 
