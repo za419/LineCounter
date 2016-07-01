@@ -30,6 +30,14 @@ int main(int argc, char* argv[])
 			help(argv[0]);
 			return 0;
 		}
+		else if (strcmp(argv[1], "/r")) // If its the recursive flag, print warning and help message, then recursive-count files in current working directory.
+		{
+			dir = _getcwd(nullptr, 0);
+			recursive = true;
+			fprintf(stderr, "Warning: No directory given, assuming %s\n", dir.c_str());
+			help(argv[0]);
+			cout << endl;
+		}
 		dir = argv[1]; // Else, assume that the argument is the directory to count
 	}
 	else if (argc==3) // Two arguments given
