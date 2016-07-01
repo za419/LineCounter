@@ -75,5 +75,6 @@ int linesInFile(WIN32_FIND_DATA ffd)
 	in.close();
 
 	sum += len;
+	return sum;
 }
 
