@@ -1,58 +1,56 @@
 // LineCounter.cpp : Defines the entry point for the console application.
-//
 
 #include "stdafx.h"
 using namespace std;
 
 #pragma comment(lib, "User32.lib")
 
-int linesInFile(WIN32_FIND_DATA);
-int linesInDirectory(const char*);
-int linesInDirectoryRecursive(const char*);
+int linesInFile(WIN32_FIND_DATA); // Returns the number of lines in the file to which the argument is a handle
+int linesInDirectory(const char*); // Returns if an error occurred, exactly like main
+int linesInDirectoryRecursive(const char*); // Returns the number of lines in the directory tree with root directory given, or -1 if an error occurred
 
-void help(const char*);
-
-bool isHelpFlag(const char*);
+void help(const char*); // Prints the help message to cout
+bool isHelpFlag(const char*); // Returns whether the passed string is a recognized help flag
 
 int main(int argc, char* argv[])
 {
 	string dir;
-	bool recursive(false);
-	if (argc == 1)
+	bool recursive(false); // Whether to use a recursive count
+	if (argc == 1) // No arguments: Print warning and help message, then flat-count files in current working directory.
 	{
 		dir = _getcwd(nullptr, 0);
-		printf("Warning: No directory given, assuming %s\n", dir.c_str());
+		fprintf(stderr, "Warning: No directory given, assuming %s\n", dir.c_str());
 		help(argv[0]);
 		cout << endl;
 	}
-	else if (argc == 2)
+	else if (argc == 2) // Only one argument given
 	{
-		if (isHelpFlag(argv[1]))
+		if (isHelpFlag(argv[1])) // If its a help flag, print the help message and return
 		{
 			help(argv[0]);
 			return 0;
 		}
-		dir = argv[1];
+		dir = argv[1]; // Else, assume that the argument is the directory to count
 	}
-	else if (argc==3)
+	else if (argc==3) // Two arguments given
 	{
 		size_t dirpos(1);
-		recursive = true;
-		if (!strcmp(argv[dirpos], "/r"))
-			dirpos = 2;
-		else if (strcmp(argv[2], "/r"))
+		recursive = true; // If the program proceeds, it will be in recursive mode
+		if (!strcmp(argv[dirpos], "/r")) // If the first argument is the recursive flag
+			dirpos = 2; // The path will be in the second argument
+		else if (strcmp(argv[2], "/r")) // If the second argument isn't the recursive flag...
 		{
-			printf("Invalid arguments \"%s\", \"%s\"\n", argv[1], argv[2]);
-			help(argv[0]);
-			return 127;
+			fprintf(stderr, "Invalid arguments \"%s\", \"%s\"\n", argv[1], argv[2]); // Generate an error,
+			help(argv[0]); // Print the help message,
+			return 127; // And exit with an error.
 		}
-		dir = argv[dirpos];
+		dir = argv[dirpos]; // If we haven't exited, this will set dir to contain the path
 	}
-	else
+	else // If there are more than two arguments, print an error message with all arguments, print the help message, and exit with an error
 	{
-		cout << "Invalid arguments \"" << argv[1] << "\"";
+		cerr << "Invalid arguments \"" << argv[1] << "\"";
 		for (int i = 2; i < argc; ++i)
-			cout << ", \"" << argv[i] << "\"";
+			cerr << ", \"" << argv[i] << "\"";
 		help(argv[0]);
 		return 127;
 	}
